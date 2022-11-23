@@ -13,7 +13,10 @@ include(pybind11Tools)
 
 pybind11_add_module(g2o g2o.cpp)
 target_link_libraries(g2o PRIVATE 
-    core
+    contrib
+	core
+	csparse
+	csparse_extension
     solver_cholmod
     solver_csparse
     solver_eigen
@@ -30,5 +33,4 @@ target_link_libraries(g2o PRIVATE
     types_slam2d_addons
     types_slam3d
     types_slam3d_addons
-    contrib
 )
