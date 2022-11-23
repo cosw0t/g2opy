@@ -3,6 +3,11 @@ SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 PROJECT(g2o)
 
+enable_language(C)
+set(BLA_VENDOR Intel10_64lp)
+find_package(BLAS)
+FIND_PACKAGE(LAPACK)
+
 # The library prefix
 SET(LIB_PREFIX g2o_)
 
@@ -93,18 +98,23 @@ IF(ANDROID)
   MESSAGE(STATUS "Cross compiling for Android")
 ENDIF()
 
+enable_language(C)
+
 # For building the CHOLMOD / CSPARSE solvers
-FIND_PACKAGE(Cholmod)
-FIND_PACKAGE(BLAS)
-FIND_PACKAGE(LAPACK)
+FIND_PACKAGE(CHOLMOD)
+
+message("CHOLMOD_FOUND = ${CHOLMOD_FOUND}")
+message("BLAS_FOUND    = ${BLAS_FOUND}")
+message("LAPACK_FOUND  = ${LAPACK_FOUND}")
 IF(CHOLMOD_FOUND AND BLAS_FOUND AND LAPACK_FOUND)
   MESSAGE(STATUS "Found CHOLMOD and its dependencies")
   SET(CHOLMOD_FOUND TRUE)
 ELSE()
   SET(CHOLMOD_FOUND FALSE)
 ENDIF()
+message("CHOLMOD_FOUND = ${CHOLMOD_FOUND}")
 
-FIND_PACKAGE(CSparse)
+FIND_PACKAGE(CSPARSE)
 IF(CSPARSE_FOUND)
   SET(BUILD_CSPARSE OFF CACHE BOOL "Build local CSparse library")
 ELSE(CSPARSE_FOUND)
@@ -113,6 +123,10 @@ ELSE(CSPARSE_FOUND)
     SET(CSPARSE_FOUND TRUE)
   ENDIF()
 ENDIF(CSPARSE_FOUND)
+
+message("CSPARSE_FOUND = ${CSPARSE_FOUND}")
+message("CSPARSE_INCLUDE_DIR = ${CSPARSE_INCLUDE_DIR}")
+
 OPTION(BUILD_LGPL_SHARED_LIBS "Build LGPL Code as Shared Libraries (LGPL Code)" OFF)   # default: ON   (modified for python binding)
 SET (G2O_LGPL_LIB_TYPE STATIC)
 IF (BUILD_LGPL_SHARED_LIBS)
@@ -145,7 +159,7 @@ IF (OPENGL_FOUND AND G2O_USE_OPENGL)
 ENDIF()
 
 # For building the GUI
-FIND_PACKAGE(QGLViewer)
+FIND_PACKAGE(QGLVIEWER)
 
 # shall we build the core apps using the library
 SET(G2O_BUILD_APPS OFF CACHE BOOL "Build g2o apps")   # default: ON   (modified for python binding)
