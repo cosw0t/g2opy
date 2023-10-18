@@ -17,11 +17,12 @@ class CopyLibFile(install):
 
     def run(self):
         install_dir = get_python_lib()
-        lib_file = glob.glob(__library_file__)
-        assert len(lib_file) == 1     
+        # lib_file = glob.glob(__library_file__)
+        # assert len(lib_file) == 1
+        print('copy the pyd file in {}'.format(install_dir))
 
-        print('copying {} -> {}'.format(lib_file[0], install_dir))
-        shutil.copy(lib_file[0], install_dir)
+        # print('copying {} -> {}'.format(lib_file[0], install_dir))
+        # shutil.copy(lib_file[0], install_dir)
 
 
 
